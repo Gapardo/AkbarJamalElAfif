@@ -1,7 +1,8 @@
-// ===== Particle Network Background =====
+// ===== Particle Network + Planet Background =====
 const canvas = document.getElementById('particleCanvas');
 const ctx = canvas.getContext('2d');
 let particles = [];
+let planets = [];
 let animationId;
 
 function resizeCanvas() {
@@ -25,7 +26,6 @@ class Particle {
     update() {
         this.x += this.vx;
         this.y += this.vy;
-
         if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
         if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
     }
@@ -38,12 +38,77 @@ class Particle {
     }
 }
 
+class Planet {
+    constructor(centerX, centerY, orbitRadiusX, orbitRadiusY, speed, size, color, glowColor) {
+        this.centerX = centerX;
+        this.centerY = centerY;
+        this.orbitRadiusX = orbitRadiusX;
+        this.orbitRadiusY = orbitRadiusY;
+        this.speed = speed;
+        this.angle = Math.random() * Math.PI * 2;
+        this.size = size;
+        this.color = color;
+        this.glowColor = glowColor;
+    }
+
+    update() {
+        this.angle += this.speed;
+    }
+
+    draw() {
+        const x = this.centerX + Math.cos(this.angle) * this.orbitRadiusX;
+        const y = this.centerY + Math.sin(this.angle) * this.orbitRadiusY;
+
+        // Orbit path
+        ctx.beginPath();
+        ctx.ellipse(this.centerX, this.centerY, this.orbitRadiusX, this.orbitRadiusY, 0, 0, Math.PI * 2);
+        ctx.strokeStyle = 'rgba(74, 222, 128, 0.04)';
+        ctx.lineWidth = 0.5;
+        ctx.stroke();
+
+        // Glow
+        const glow = ctx.createRadialGradient(x, y, 0, x, y, this.size * 3);
+        glow.addColorStop(0, this.glowColor);
+        glow.addColorStop(1, 'transparent');
+        ctx.beginPath();
+        ctx.arc(x, y, this.size * 3, 0, Math.PI * 2);
+        ctx.fillStyle = glow;
+        ctx.fill();
+
+        // Planet
+        ctx.beginPath();
+        ctx.arc(x, y, this.size, 0, Math.PI * 2);
+        ctx.fillStyle = this.color;
+        ctx.fill();
+    }
+}
+
 function initParticles() {
     const count = Math.min(80, Math.floor((canvas.width * canvas.height) / 15000));
     particles = [];
     for (let i = 0; i < count; i++) {
         particles.push(new Particle());
     }
+}
+
+function initPlanets() {
+    planets = [
+        new Planet(
+            canvas.width * 0.8, canvas.height * 0.25,
+            120, 60, 0.003, 6,
+            'rgba(74, 222, 128, 0.8)', 'rgba(74, 222, 128, 0.15)'
+        ),
+        new Planet(
+            canvas.width * 0.15, canvas.height * 0.7,
+            90, 45, -0.002, 4,
+            'rgba(59, 130, 246, 0.7)', 'rgba(59, 130, 246, 0.12)'
+        ),
+        new Planet(
+            canvas.width * 0.5, canvas.height * 0.5,
+            200, 80, 0.001, 3,
+            'rgba(168, 85, 247, 0.6)', 'rgba(168, 85, 247, 0.1)'
+        ),
+    ];
 }
 
 function drawConnections() {
@@ -71,12 +136,14 @@ function animate() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     particles.forEach(p => { p.update(); p.draw(); });
     drawConnections();
+    planets.forEach(p => { p.update(); p.draw(); });
     animationId = requestAnimationFrame(animate);
 }
 
 initParticles();
+initPlanets();
 animate();
-window.addEventListener('resize', initParticles);
+window.addEventListener('resize', () => { initParticles(); initPlanets(); });
 
 // ===== Navbar visibility on scroll =====
 const navbar = document.getElementById('navbar');
