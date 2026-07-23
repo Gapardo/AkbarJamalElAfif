@@ -111,6 +111,74 @@ function initPlanets() {
     ];
 }
 
+// Sagittarius constellation pattern
+const sagittariusPattern = [
+    // Teapot body (main asterism)
+    { x: 0, y: 0.4 },      // 0 - Kaus Media
+    { x: 0.12, y: 0.55 },  // 1 - Kaus Australis
+    { x: 0.28, y: 0.5 },   // 2 - Ascella
+    { x: 0.3, y: 0.35 },   // 3 - Phi Sgr
+    { x: 0.18, y: 0.25 },  // 4 - Nunki
+    { x: 0.05, y: 0.28 },  // 5 - Kaus Borealis
+    // Arrow/bow
+    { x: -0.1, y: 0.1 },   // 6 - Nash (tip)
+    { x: 0.35, y: 0.2 },   // 7 - Tau Sgr
+    // Handle
+    { x: 0.4, y: 0.45 },   // 8 - Handle
+];
+
+const sagittariusConnections = [
+    [0, 1], [1, 2], [2, 3], [3, 4], [4, 5], [5, 0], // Teapot body
+    [5, 6], [0, 6], // Arrow lines
+    [3, 7], [4, 7], // Upper connection
+    [2, 8], [3, 8], // Handle
+];
+
+function drawSagittarius() {
+    const offsetX = canvas.width * 0.65;
+    const offsetY = canvas.height * 0.15;
+    const scale = Math.min(canvas.width, canvas.height) * 0.35;
+    const time = Date.now() * 0.0003;
+    const opacity = 0.3 + Math.sin(time) * 0.1;
+
+    // Draw connections
+    ctx.beginPath();
+    sagittariusConnections.forEach(([a, b]) => {
+        const ax = offsetX + sagittariusPattern[a].x * scale;
+        const ay = offsetY + sagittariusPattern[a].y * scale;
+        const bx = offsetX + sagittariusPattern[b].x * scale;
+        const by = offsetY + sagittariusPattern[b].y * scale;
+        ctx.moveTo(ax, ay);
+        ctx.lineTo(bx, by);
+    });
+    ctx.strokeStyle = `rgba(74, 222, 128, ${opacity * 0.3})`;
+    ctx.lineWidth = 0.8;
+    ctx.stroke();
+
+    // Draw stars
+    sagittariusPattern.forEach((star, i) => {
+        const x = offsetX + star.x * scale;
+        const y = offsetY + star.y * scale;
+        const starSize = (i < 6) ? 2.5 : 1.8;
+        const twinkle = Math.sin(time + i * 0.7) * 0.15;
+
+        // Glow
+        const glow = ctx.createRadialGradient(x, y, 0, x, y, starSize * 4);
+        glow.addColorStop(0, `rgba(74, 222, 128, ${(opacity + twinkle) * 0.4})`);
+        glow.addColorStop(1, 'transparent');
+        ctx.beginPath();
+        ctx.arc(x, y, starSize * 4, 0, Math.PI * 2);
+        ctx.fillStyle = glow;
+        ctx.fill();
+
+        // Star point
+        ctx.beginPath();
+        ctx.arc(x, y, starSize, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(255, 255, 255, ${opacity + twinkle})`;
+        ctx.fill();
+    });
+}
+
 function drawConnections() {
     const maxDist = 150;
     for (let i = 0; i < particles.length; i++) {
@@ -134,6 +202,7 @@ function drawConnections() {
 
 function animate() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+    drawSagittarius();
     particles.forEach(p => { p.update(); p.draw(); });
     drawConnections();
     planets.forEach(p => { p.update(); p.draw(); });
