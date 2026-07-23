@@ -112,7 +112,7 @@ function initPlanets() {
 }
 
 // Sagittarius constellation pattern
-const sagittariusPattern = [
+const constellationPattern = [
     // Teapot body (main asterism)
     { x: 0, y: 0.4 },      // 0 - Kaus Media
     { x: 0.12, y: 0.55 },  // 1 - Kaus Australis
@@ -127,14 +127,14 @@ const sagittariusPattern = [
     { x: 0.4, y: 0.45 },   // 8 - Handle
 ];
 
-const sagittariusConnections = [
+const constellationConnections = [
     [0, 1], [1, 2], [2, 3], [3, 4], [4, 5], [5, 0], // Teapot body
     [5, 6], [0, 6], // Arrow lines
     [3, 7], [4, 7], // Upper connection
     [2, 8], [3, 8], // Handle
 ];
 
-function drawSagittarius() {
+function drawConstellation() {
     const offsetX = canvas.width * 0.65;
     const offsetY = canvas.height * 0.15;
     const scale = Math.min(canvas.width, canvas.height) * 0.35;
@@ -143,11 +143,11 @@ function drawSagittarius() {
 
     // Draw connections
     ctx.beginPath();
-    sagittariusConnections.forEach(([a, b]) => {
-        const ax = offsetX + sagittariusPattern[a].x * scale;
-        const ay = offsetY + sagittariusPattern[a].y * scale;
-        const bx = offsetX + sagittariusPattern[b].x * scale;
-        const by = offsetY + sagittariusPattern[b].y * scale;
+    constellationConnections.forEach(([a, b]) => {
+        const ax = offsetX + constellationPattern[a].x * scale;
+        const ay = offsetY + constellationPattern[a].y * scale;
+        const bx = offsetX + constellationPattern[b].x * scale;
+        const by = offsetY + constellationPattern[b].y * scale;
         ctx.moveTo(ax, ay);
         ctx.lineTo(bx, by);
     });
@@ -156,7 +156,7 @@ function drawSagittarius() {
     ctx.stroke();
 
     // Draw stars
-    sagittariusPattern.forEach((star, i) => {
+    constellationPattern.forEach((star, i) => {
         const x = offsetX + star.x * scale;
         const y = offsetY + star.y * scale;
         const starSize = (i < 6) ? 2.5 : 1.8;
@@ -202,7 +202,7 @@ function drawConnections() {
 
 function animate() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    drawSagittarius();
+    drawConstellation();
     particles.forEach(p => { p.update(); p.draw(); });
     drawConnections();
     planets.forEach(p => { p.update(); p.draw(); });
