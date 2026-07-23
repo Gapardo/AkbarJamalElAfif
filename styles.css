@@ -290,7 +290,7 @@ ul {
 
 /* ===== ABOUT ===== */
 .about {
-    background: var(--bg-secondary);
+    background: transparent;
 }
 
 .about-content {
@@ -417,7 +417,7 @@ ul {
 
 /* ===== CAPABILITIES ===== */
 .capabilities {
-    background: var(--bg-secondary);
+    background: transparent;
 }
 
 .capabilities-grid {
@@ -525,7 +525,7 @@ ul {
 
 /* ===== EDUCATION ===== */
 .education {
-    background: var(--bg-secondary);
+    background: transparent;
 }
 
 .education-card {
@@ -567,7 +567,7 @@ ul {
 
 /* ===== CONTACT ===== */
 .contact {
-    background: var(--bg-secondary);
+    background: transparent;
 }
 
 /* ===== CERTIFICATES ===== */
