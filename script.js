@@ -100,3 +100,33 @@ if (roleEl) {
     }
     setTimeout(typeRole, 800);
 }
+
+// ===== PDF Modal =====
+const pdfModal = document.getElementById('pdfModal');
+const pdfViewer = document.getElementById('pdfViewer');
+const pdfModalClose = document.getElementById('pdfModalClose');
+const pdfOverlay = document.querySelector('.pdf-modal-overlay');
+
+document.querySelectorAll('.certificate-link[data-pdf]').forEach(link => {
+    link.addEventListener('click', function (e) {
+        e.preventDefault();
+        const pdfUrl = this.getAttribute('data-pdf');
+        pdfViewer.src = pdfUrl + '#toolbar=0&navpanes=0';
+        pdfModal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    });
+});
+
+function closePdfModal() {
+    pdfModal.classList.remove('active');
+    pdfViewer.src = '';
+    document.body.style.overflow = '';
+}
+
+pdfModalClose.addEventListener('click', closePdfModal);
+pdfOverlay.addEventListener('click', closePdfModal);
+document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && pdfModal.classList.contains('active')) {
+        closePdfModal();
+    }
+});
