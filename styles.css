@@ -523,6 +523,76 @@ ul {
     color: var(--accent);
 }
 
+/* ===== EDUCATION ===== */
+.education {
+    background: var(--bg-secondary);
+}
+
+.education-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 2rem;
+    max-width: 500px;
+}
+
+.education-degree {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.education-school {
+    font-size: 0.95rem;
+    color: var(--accent);
+    margin-bottom: 0.4rem;
+}
+
+.education-meta {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}
+
+/* ===== BACKGROUND ANIMATION ===== */
+body {
+    position: relative;
+}
+
+body::before,
+body::after {
+    content: '';
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(120px);
+    opacity: 0.15;
+    z-index: -1;
+    pointer-events: none;
+}
+
+body::before {
+    width: 400px;
+    height: 400px;
+    background: var(--accent);
+    bottom: -100px;
+    right: -100px;
+    animation: floatOrb 8s ease-in-out infinite;
+}
+
+body::after {
+    width: 300px;
+    height: 300px;
+    background: #3b82f6;
+    bottom: 50px;
+    left: -80px;
+    animation: floatOrb 10s ease-in-out infinite reverse;
+}
+
+@keyframes floatOrb {
+    0%, 100% { transform: translate(0, 0); }
+    50% { transform: translate(30px, -30px); }
+}
+
 /* ===== CONTACT ===== */
 .contact {
     background: var(--bg-secondary);
