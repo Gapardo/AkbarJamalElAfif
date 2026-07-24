@@ -330,7 +330,8 @@ document.querySelectorAll('.certificate-link[data-pdf]').forEach(link => {
     link.addEventListener('click', function (e) {
         e.preventDefault();
         const pdfUrl = this.getAttribute('data-pdf');
-        const fullUrl = window.location.origin + window.location.pathname + pdfUrl;
+        const baseUrl = 'https://gapardo.github.io/AkbarJamalElAfif/';
+        const fullUrl = baseUrl + pdfUrl;
         pdfViewer.src = 'https://docs.google.com/gview?url=' + encodeURIComponent(fullUrl) + '&embedded=true';
         pdfModal.classList.add('active');
         document.body.style.overflow = 'hidden';
