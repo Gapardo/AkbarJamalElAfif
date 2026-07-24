@@ -273,6 +273,7 @@ initFadeIn();
 // ===== Smooth scroll for anchor links =====
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
+        if (this.hasAttribute('data-pdf')) return;
         const href = this.getAttribute('href');
         if (href === '#' || href.length <= 1) return;
         e.preventDefault();
