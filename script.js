@@ -332,11 +332,18 @@ document.querySelectorAll('.certificate-link[data-pdf]').forEach(link => {
     link.addEventListener('click', function (e) {
         e.preventDefault();
         const pdfUrl = this.getAttribute('data-pdf');
-        const baseUrl = 'https://gapardo.github.io/AkbarJamalElAfif/';
-        const fullUrl = baseUrl + encodeURI(pdfUrl);
-        pdfViewer.src = 'https://mozilla.github.io/pdf.js/web/viewer.html?file=' + encodeURIComponent(fullUrl);
-        pdfModal.classList.add('active');
-        document.body.style.overflow = 'hidden';
+        const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+
+        if (isMobile) {
+            // Mobile: open Google Docs viewer in new tab
+            const fullUrl = 'https://gapardo.github.io/AkbarJamalElAfif/' + encodeURI(pdfUrl);
+            window.open('https://docs.google.com/gview?url=' + encodeURIComponent(fullUrl), '_blank');
+        } else {
+            // Desktop: show in modal with direct embed
+            pdfViewer.src = pdfUrl + '#toolbar=0&navpanes=0';
+            pdfModal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
     });
 });
 
