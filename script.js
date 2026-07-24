@@ -273,8 +273,10 @@ initFadeIn();
 // ===== Smooth scroll for anchor links =====
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
+        const href = this.getAttribute('href');
+        if (href === '#' || href.length <= 1) return;
         e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
+        const target = document.querySelector(href);
         if (target) {
             target.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
@@ -331,8 +333,8 @@ document.querySelectorAll('.certificate-link[data-pdf]').forEach(link => {
         e.preventDefault();
         const pdfUrl = this.getAttribute('data-pdf');
         const baseUrl = 'https://gapardo.github.io/AkbarJamalElAfif/';
-        const fullUrl = baseUrl + pdfUrl;
-        pdfViewer.src = 'https://docs.google.com/gview?url=' + encodeURIComponent(fullUrl) + '&embedded=true';
+        const fullUrl = baseUrl + encodeURI(pdfUrl);
+        pdfViewer.src = 'https://mozilla.github.io/pdf.js/web/viewer.html?file=' + encodeURIComponent(fullUrl);
         pdfModal.classList.add('active');
         document.body.style.overflow = 'hidden';
     });
