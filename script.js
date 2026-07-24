@@ -330,7 +330,8 @@ document.querySelectorAll('.certificate-link[data-pdf]').forEach(link => {
     link.addEventListener('click', function (e) {
         e.preventDefault();
         const pdfUrl = this.getAttribute('data-pdf');
-        pdfViewer.src = pdfUrl + '#toolbar=0&navpanes=0';
+        const fullUrl = window.location.origin + window.location.pathname + pdfUrl;
+        pdfViewer.src = 'https://docs.google.com/gview?url=' + encodeURIComponent(fullUrl) + '&embedded=true';
         pdfModal.classList.add('active');
         document.body.style.overflow = 'hidden';
     });
