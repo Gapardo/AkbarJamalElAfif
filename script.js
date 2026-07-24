@@ -84,7 +84,10 @@ class Planet {
 }
 
 function initParticles() {
-    const count = Math.min(80, Math.floor((canvas.width * canvas.height) / 15000));
+    const isMobile = canvas.width < 768;
+    const count = isMobile
+        ? Math.min(30, Math.floor((canvas.width * canvas.height) / 25000))
+        : Math.min(80, Math.floor((canvas.width * canvas.height) / 15000));
     particles = [];
     for (let i = 0; i < count; i++) {
         particles.push(new Particle());
